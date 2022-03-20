@@ -10,6 +10,7 @@ func TestMakeByteCodeFromOpcode(t *testing.T) {
 	}{
 		{Opconstant, []int{65534}, []byte{byte(Opconstant), 255, 254}},
 		{Opconstant, []int{1}, []byte{byte(Opconstant), 0, 1}},
+		{OpAdd, []int{}, []byte{byte(OpAdd)}},
 	}
 	for _, tt := range tests {
 		instruction := MakeByteCodeFromOpcodeAndOperands(tt.op, tt.operands...)
@@ -55,10 +56,12 @@ func TestInstructionString(t *testing.T) {
 		MakeByteCodeFromOpcodeAndOperands(Opconstant, 1),
 		MakeByteCodeFromOpcodeAndOperands(Opconstant, 2),
 		MakeByteCodeFromOpcodeAndOperands(Opconstant, 65535),
+		MakeByteCodeFromOpcodeAndOperands(OpAdd),
 	}
 	expected := `0000 OpConstant 1
 0003 OpConstant 2
 0006 OpConstant 65535
+0009 OpAdd
 `
 	concatted := Instructions{}
 	for _, ins := range instructions {

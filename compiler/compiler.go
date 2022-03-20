@@ -1,6 +1,8 @@
 package compiler
 
 import (
+	"fmt"
+
 	"github.com/Revolyssup/ape/ast"
 	"github.com/Revolyssup/ape/code"
 	"github.com/Revolyssup/ape/obj"
@@ -51,6 +53,12 @@ func (c *Compiler) Compile(node ast.Node) error {
 		err = c.Compile(node.RightExpression)
 		if err != nil {
 			return err
+		}
+		switch node.Operator {
+		case "+":
+			c.instruction = append(c.instruction, code.MakeByteCodeFromOpcodeAndOperands(code.OpAdd)...)
+		default:
+			return fmt.Errorf("unknown operator %s", node.Operator)
 		}
 	case *ast.IntegerLiteral:
 		integer := &obj.Integer{Value: node.Value}

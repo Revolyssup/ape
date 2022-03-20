@@ -19,6 +19,8 @@ func (ins Instructions) fmtInstruction(def *Definition, operands []int) string {
 	switch operandWidth {
 	case 1:
 		return fmt.Sprintf("%s %d", def.Name, operands[0])
+	case 0:
+		return def.Name
 	}
 	return fmt.Sprintf("ERROR: unhandled operandWidth for %s\n", def.Name)
 }
@@ -46,6 +48,7 @@ const (
 		Instead we will use Opconstant which refers to constant expressions whose value can be determined at compiled time and put in a "constants pool"
 	*/
 	Opconstant Opcode = iota
+	OpAdd
 )
 
 //For debugging purposes
@@ -56,6 +59,7 @@ type Definition struct {
 
 var definitions = map[Opcode]*Definition{
 	Opconstant: {"OpConstant", []int{2}}, //The single operand takes 2 bytes(16 bits) which means we can have 65536 unique constants in our constant pool at a time.
+	OpAdd:      {"OpAdd", []int{}},       //Add operation does not take any operands. It pops off first two objects from virtual machine stack, add them together and pushes back in.
 }
 
 func LookupOpcode(op Opcode) (*Definition, error) {

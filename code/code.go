@@ -49,6 +49,9 @@ const (
 	*/
 	Opconstant Opcode = iota
 	OpAdd
+	OpMul
+	OpDiv
+	OpSub
 )
 
 //For debugging purposes
@@ -60,6 +63,9 @@ type Definition struct {
 var definitions = map[Opcode]*Definition{
 	Opconstant: {"OpConstant", []int{2}}, //The single operand takes 2 bytes(16 bits) which means we can have 65536 unique constants in our constant pool at a time.
 	OpAdd:      {"OpAdd", []int{}},       //Add operation does not take any operands. It pops off first two objects from virtual machine stack, add them together and pushes back in.
+	OpMul:      {"OpMultiply", []int{}},
+	OpDiv:      {"OpDivide", []int{}},
+	OpSub:      {"OpSubtract", []int{}},
 }
 
 func LookupOpcode(op Opcode) (*Definition, error) {

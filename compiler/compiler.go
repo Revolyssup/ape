@@ -57,6 +57,12 @@ func (c *Compiler) Compile(node ast.Node) error {
 		switch node.Operator {
 		case "+":
 			c.instruction = append(c.instruction, code.MakeByteCodeFromOpcodeAndOperands(code.OpAdd)...)
+		case "*":
+			c.instruction = append(c.instruction, code.MakeByteCodeFromOpcodeAndOperands(code.OpMul)...)
+		case "/":
+			c.instruction = append(c.instruction, code.MakeByteCodeFromOpcodeAndOperands(code.OpDiv)...)
+		case "-":
+			c.instruction = append(c.instruction, code.MakeByteCodeFromOpcodeAndOperands(code.OpSub)...)
 		default:
 			return fmt.Errorf("unknown operator %s", node.Operator)
 		}

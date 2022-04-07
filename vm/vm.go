@@ -58,6 +58,48 @@ func (vm *VM) Run() error {
 				return err
 			}
 			vm.push(ans)
+		case code.OpMul:
+			first, err := vm.pop()
+			if err != nil {
+				return err
+			}
+			second, err := vm.pop()
+			if err != nil {
+				return err
+			}
+			ans, err := multiplyTwoObjects(first, second)
+			if err != nil {
+				return err
+			}
+			vm.push(ans)
+		case code.OpSub:
+			first, err := vm.pop()
+			if err != nil {
+				return err
+			}
+			second, err := vm.pop()
+			if err != nil {
+				return err
+			}
+			ans, err := subTwoObjects(first, second)
+			if err != nil {
+				return err
+			}
+			vm.push(ans)
+		case code.OpDiv:
+			first, err := vm.pop()
+			if err != nil {
+				return err
+			}
+			second, err := vm.pop()
+			if err != nil {
+				return err
+			}
+			ans, err := divTwoObjects(first, second)
+			if err != nil {
+				return err
+			}
+			vm.push(ans)
 		}
 	}
 	return nil
@@ -72,6 +114,42 @@ func addTwoObjects(obj1 obj.Object, obj2 obj.Object) (obj.Object, error) {
 		a := obj1.(*obj.Integer)
 		b := obj2.(*obj.Integer)
 		return &obj.Integer{Value: a.Value + b.Value}, nil
+	}
+	return nil, fmt.Errorf("Invalid datatype")
+}
+func multiplyTwoObjects(obj1 obj.Object, obj2 obj.Object) (obj.Object, error) {
+	if obj1.DataType() != obj2.DataType() {
+		return nil, fmt.Errorf("Cannot add two different types %v and %v", obj1.DataType(), obj2.DataType())
+	}
+	switch obj1.DataType() {
+	case obj.INTEGER_OBJ:
+		a := obj1.(*obj.Integer)
+		b := obj2.(*obj.Integer)
+		return &obj.Integer{Value: a.Value * b.Value}, nil
+	}
+	return nil, fmt.Errorf("Invalid datatype")
+}
+func subTwoObjects(obj1 obj.Object, obj2 obj.Object) (obj.Object, error) {
+	if obj1.DataType() != obj2.DataType() {
+		return nil, fmt.Errorf("Cannot add two different types %v and %v", obj1.DataType(), obj2.DataType())
+	}
+	switch obj1.DataType() {
+	case obj.INTEGER_OBJ:
+		a := obj1.(*obj.Integer)
+		b := obj2.(*obj.Integer)
+		return &obj.Integer{Value: a.Value - b.Value}, nil
+	}
+	return nil, fmt.Errorf("Invalid datatype")
+}
+func divTwoObjects(obj1 obj.Object, obj2 obj.Object) (obj.Object, error) {
+	if obj1.DataType() != obj2.DataType() {
+		return nil, fmt.Errorf("Cannot add two different types %v and %v", obj1.DataType(), obj2.DataType())
+	}
+	switch obj1.DataType() {
+	case obj.INTEGER_OBJ:
+		a := obj1.(*obj.Integer)
+		b := obj2.(*obj.Integer)
+		return &obj.Integer{Value: a.Value / b.Value}, nil
 	}
 	return nil, fmt.Errorf("Invalid datatype")
 }
